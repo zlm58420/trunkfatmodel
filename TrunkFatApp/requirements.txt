@@ -1,8 +1,14 @@
-pip>=23.0.1/setuptools>=70.0.0/wheel>=0.42.0
-Flask==2.3.3
-numpy==1.24.3
-scikit-learn==1.3.0
+# 构建工具（每个依赖单独一行！）
+pip>=23.0.1
+setuptools>=70.0.0
+wheel>=0.42.0
+
+# Web框架相关
+flask==2.3.3
 gunicorn==21.2.0
-joblib==1.3.2
+
+# 数据科学包（适配Python）
+numpy==1.24.3
 pandas==2.1.4
+joblib==1.3.2
 xgboost==2.0.3
