@@ -1,0 +1,268 @@
+/* 整体样式 */
+:root {
+    --primary-color: #4a6fa5;
+    --primary-dark: #385d8a;
+    --secondary-color: #6d9dc5;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --light-bg: #f8f9fa;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --border-radius: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'Segoe UI', 'Noto Sans SC', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e3e8f0 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+/* 容器布局 */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 卡片样式 */
+.card {
+    background: white;
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    margin-bottom: 30px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+    padding: 25px 30px;
+    text-align: center;
+}
+
+.card-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.card-header p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+/* 表单样式 */
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+}
+
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    height: 50px;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(74, 111, 165, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    font-size: 1.05rem;
+}
+
+/* 按钮样式 */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border: none;
+    border-radius: 12px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    height: 55px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark), #2c4a6f);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);
+}
+
+.btn-primary:disabled {
+    opacity: 0.7;
+    transform: none;
+}
+
+.btn-outline-secondary {
+    border-radius: 12px;
+    padding: 10px 25px;
+}
+
+/* 结果卡片 */
+#resultCard {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-percentage {
+    font-size: 4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 10px 0;
+    line-height: 1;
+}
+
+/* 风险徽章 */
+.risk-badge {
+    font-size: 1.2rem;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    margin: 15px 0;
+}
+
+.bg-success-light {
+    background-color: rgba(40, 167, 69, 0.1) !important;
+    color: var(--success-color);
+    border: 2px solid var(--success-color);
+}
+
+.bg-danger-light {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+    color: var(--danger-color);
+    border: 2px solid var(--danger-color);
+}
+
+/* 建议框 */
+.advice-box {
+    background: var(--light-bg);
+    border-left: 5px solid var(--primary-color);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.advice-box h5 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .card-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    .result-percentage {
+        font-size: 3rem;
+    }
+    
+    .btn-primary {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+    }
+}
+
+/* 加载动画 */
+.spinner-border {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+/* 信息提示 */
+.info-note {
+    background: #e7f3ff;
+    border-left: 4px solid var(--primary-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.cutoff-note {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-style: italic;
+    margin-top: 15px;
+}
+
+/* 输入组动画 */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group input:focus {
+    z-index: 1;
+}
+
+/* 页脚 */
+.footer {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+/* 错误提示 */
+.alert-danger {
+    border-radius: 12px;
+    border: none;
+    padding: 15px;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}

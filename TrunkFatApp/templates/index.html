@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>躯干脂肪比例评估系统</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- 自定义CSS -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 主卡片 -->
+        <div class="card">
+            <div class="card-header">
+                <h1>🧬 躯干脂肪比例评估系统</h1>
+                <p>基于机器学习模型的代谢性疾病风险筛查工具</p>
+            </div>
+            
+            <div class="card-body">
+                <!-- 使用说明 -->
+                <div class="info-note mb-4">
+                    <p><strong>使用说明：</strong>请输入您的身体测量指标。本系统将根据临床研究定义的 <strong class="text-danger">28.6%</strong> 临界值，评估您的代谢性疾病风险（包括高血压、糖尿病、心血管疾病等）。</p>
+                </div>
+                
+                <!-- 输入表单 -->
+                <form id="predictionForm">
+                    <div class="row g-4">
+                        <!-- 性别选择 -->
+                        <div class="col-md-12">
+                            <label class="form-label">性别</label>
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked>
+                                    <label class="form-check-label" for="male">
+                                        <i class="bi bi-gender-male me-1"></i>男性
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                                    <label class="form-check-label" for="female">
+                                        <i class="bi bi-gender-female me-1"></i>女性
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 身体指标 -->
+                        <div class="col-md-6">
+                            <label for="waist" class="form-label">
+                                <i class="bi bi-rulers me-1"></i>腰围 (cm)
+                            </label>
+                            <input type="number" class="form-control" id="waist" 
+                                   placeholder="例如：85.0" step="0.1" min="50" max="200" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="height" class="form-label">
+                                <i class="bi bi-person-standing me-1"></i>身高 (cm)
+                            </label>
+                            <input type="number" class="form-control" id="height" 
+                                   placeholder="例如：175.0" step="0.1" min="100" max="250" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="weight" class="form-label">
+                                <i class="bi bi-speedometer2 me-1"></i>体重 (kg)
+                            </label>
+                            <input type="number" class="form-control" id="weight" 
+                                   placeholder="例如：70.0" step="0.1" min="30" max="200" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="age" class="form-label">
+                                <i class="bi bi-calendar3 me-1"></i>年龄
+                            </label>
+                            <input type="number" class="form-control" id="age" 
+                                   placeholder="例如：45" min="18" max="100" required>
+                        </div>
+                    </div>
+                    
+                    <!-- 提交按钮 -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span id="buttonText">开始评估</span>
+                            <span id="spinner" class="spinner-border spinner-border-sm d-none ms-2" role="status"></span>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- 错误提示 -->
+                <div class="alert alert-danger mt-3 d-none" id="errorAlert" role="alert"></div>
+                
+                <!-- 结果显示 -->
+                <div class="card mt-4" id="resultCard" style="display: none;">
+                    <div class="card-body text-center p-5">
+                        <h2 class="card-title mb-4">评估结果</h2>
+                        
+                        <!-- 百分比显示 -->
+                        <div class="result-percentage mb-3" id="percentageDisplay">--.-%</div>
+                        <p class="fs-5 text-muted mb-4">躯干脂肪比例</p>
+                        
+                        <!-- 风险等级 -->
+                        <div class="mb-4">
+                            <span class="risk-badge" id="riskBadge">--</span>
+                        </div>
+                        
+                        <!-- 主要建议 -->
+                        <div class="advice-box mb-4">
+                            <h5><i class="bi bi-heart-pulse me-2"></i>健康建议</h5>
+                            <p id="adviceText" class="mb-2">--</p>
+                            <p id="detailedAdvice" class="mb-0">--</p>
+                        </div>
+                        
+                        <!-- 详细建议列表 -->
+                        <div id="recommendationsContainer" style="display: none;">
+                            <h5 class="text-start mb-3"><i class="bi bi-list-check me-2"></i>个性化建议</h5>
+                            <ul class="list-group list-group-flush text-start" id="recommendationsList">
+                                <!-- 建议将通过JS动态添加 -->
+                            </ul>
+                        </div>
+                        
+                        <!-- 临界值说明 -->
+                        <div class="cutoff-note mt-4">
+                            <p id="cutoffNote">根据临床研究，躯干脂肪比例 ≥ 28.6% 被视为代谢性疾病的风险临界值。</p>
+                        </div>
+                        
+                        <!-- 重置按钮 -->
+                        <button class="btn btn-outline-secondary mt-3" onclick="resetForm()">
+                            <i class="bi bi-arrow-clockwise me-2"></i>重新评估
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="footer">
+            <p><small>© 2026 躯干脂肪比例评估系统 | 本工具结果仅供参考，不能替代专业医疗诊断。如有健康问题，请咨询医生。
+参考文献：Zeng L, Guo X, Wu H, Huang C. Machine learning-based estimation of trunk fat percentage and its association with cardiometabolic risk leveraging two large national cohorts. Front Nutr (2026) 13: doi: 10.3389/fnut.2026.1715570</small></p>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 自定义JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
